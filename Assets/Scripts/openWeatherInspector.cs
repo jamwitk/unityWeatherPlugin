@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-
+using SimpleJSON;
 public class openWeatherInspector : EditorWindow
 {
     string _url = "";
@@ -18,21 +18,29 @@ public class openWeatherInspector : EditorWindow
     
     private void OnGUI()
     {
-
-        GUILayout.Label("Connect To The OpenWeither", EditorStyles.boldLabel);
-        // Constrain all drawing to be within a 800x600 pixel area centered on the screen.
-        giveData = GameObject.Find("GetDataFromApi").GetComponent<GetDataFromAPI>(); // with giveData this will give url to GetData string in GetDataFromApi.cs
-
-        _api = EditorGUILayout.TextField("Api Key", _api);
-        _city= EditorGUILayout.TextField("City Name ", _city);
-
-        if(GUILayout.Button("Add key"))
+        try
         {
-            _url = "api.openweathermap.org/data/2.5/weather?q=" + CapitalizeString(_city) + "&appid=" + _api;
-            giveData.GetData = _url;
-            Debug.Log(giveData.GetData);
+            GUILayout.Label("Connect To The OpenWeither", EditorStyles.boldLabel);
+            // Constrain all drawing to be within a 800x600 pixel area centered on the screen.
+            giveData = GameObject.Find("GetDataFromAPI").GetComponent<GetDataFromAPI>(); // with giveData this will give url to GetData string in GetDataFromApi.cs
+
+            _api = EditorGUILayout.TextField("Api Key", _api);
+            _city = EditorGUILayout.TextField("City Name ", _city);
+
+            if (GUILayout.Button("Add key"))
+            {
+                _url = "https://api.openweathermap.org/data/2.5/weather?q="+CapitalizeString(_city) + "&appid=" + _api;
+                giveData.GetData = _url;
+                giveData.StartCoroutine(giveData.GetWeatherData());
+               // Debug.Log(giveData.GetData);
+            }
         }
-       
+        catch (System.Exception ex)
+        {
+            Debug.Log(ex.Message);
+            
+        }
+
        
     }
 

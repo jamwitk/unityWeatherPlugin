@@ -307,7 +307,7 @@ GameObject:
   - component: {fileID: 1506698777}
   - component: {fileID: 1506698778}
   m_Layer: 0
-  m_Name: shutTheFuckUp
+  m_Name: GetDataFromAPI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
