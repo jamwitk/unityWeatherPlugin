@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using SimpleJSON;
+using OWMap;
 public class openWeatherInspector : EditorWindow
 {
     string _url = "";
     public string _api = "";
     public string _city = "";
+    private bool _showBtn = true;
     public Texture icon;
     GetDataFromAPI giveData;
-
+   
     [MenuItem("Tools/Open Window")]
     public static void ShowWindow(){
         GetWindow(typeof(openWeatherInspector));
@@ -26,10 +28,10 @@ public class openWeatherInspector : EditorWindow
 
             _api = EditorGUILayout.TextField("Api Key", _api);
             _city = EditorGUILayout.TextField("City Name ", _city);
-
+            _showBtn = EditorGUILayout.Toggle("Get Name ", _showBtn);
             if (GUILayout.Button("Add key"))
             {
-                _url = "https://api.openweathermap.org/data/2.5/weather?q="+CapitalizeString(_city) + "&appid=" + _api;
+                _url = "https://api.openweathermap.org/data/2.5/weather?q="+CapitalizeString(_city) + "&units=metric&appid=" + _api;
                 giveData.GetData = _url;
                 giveData.StartCoroutine(giveData.GetWeatherData());
                // Debug.Log(giveData.GetData);
