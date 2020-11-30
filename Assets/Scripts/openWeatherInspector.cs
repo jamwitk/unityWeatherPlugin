@@ -4,9 +4,8 @@ using UnityEngine;
 using UnityEditor;
 using SimpleJSON;
 using OWMap;
-public class openWeatherInspector : EditorWindow
+public class openWeatherInspector : EditorWindow 
 {
-    string _url = "";
     public string _api = "";
     public string _city = "";
     private bool _showBtn = true;
@@ -20,21 +19,24 @@ public class openWeatherInspector : EditorWindow
     
     private void OnGUI()
     {
+       
         try
         {
             GUILayout.Label("Connect To The OpenWeither", EditorStyles.boldLabel);
             // Constrain all drawing to be within a 800x600 pixel area centered on the screen.
-            giveData = GameObject.Find("GetDataFromAPI").GetComponent<GetDataFromAPI>(); // with giveData this will give url to GetData string in GetDataFromApi.cs
+           // giveData = GameObject.Find("GetDataFromAPI").GetComponent<GetDataFromAPI>(); // with giveData this will give url to GetData string in GetDataFromApi.cs
 
+            //Layout design
             _api = EditorGUILayout.TextField("Api Key", _api);
             _city = EditorGUILayout.TextField("City Name ", _city);
             _showBtn = EditorGUILayout.Toggle("Get Name ", _showBtn);
+
+            
+
             if (GUILayout.Button("Add key"))
             {
-                _url = "https://api.openweathermap.org/data/2.5/weather?q="+CapitalizeString(_city) + "&units=metric&appid=" + _api;
-                giveData.GetData = _url;
-                giveData.StartCoroutine(giveData.GetWeatherData());
-               // Debug.Log(giveData.GetData);
+                var getRequest = new Inputs(_city);
+                getRequest.getRequest(_api);
             }
         }
         catch (System.Exception ex)

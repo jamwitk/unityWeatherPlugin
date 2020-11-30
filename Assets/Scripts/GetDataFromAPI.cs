@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEditor;
 using UnityEngine.Networking;
 using SimpleJSON;
+using OWMap;
 
 
 public class GetDataFromAPI : MonoBehaviour
@@ -38,29 +39,38 @@ public class GetDataFromAPI : MonoBehaviour
             else
             {
                 setWeatherAttributes(webRequest.downloadHandler.text);
-
             }
         }
     }
     void setWeatherAttributes(string jsonString)
     {
-        
-        var weatherJson = JSON.Parse(jsonString);
-        lon = float.Parse(weatherJson["coord"]["lon"].Value);
-        lat = float.Parse(weatherJson["coord"]["lat"].Value);
-        city = weatherJson["name"].Value;
-        weatherDescription = weatherJson["weather"][0]["description"].Value;
-        _icon = weatherJson["weather"][0]["icon"].Value;
-        temp = weatherJson["main"]["temp"].AsInt;
-        feels_like = float.Parse(weatherJson["main"]["feels_like"].Value) / 100;
-        wind_speed = float.Parse(weatherJson["wind"]["speed"].Value);
-        wind_deg = float.Parse(weatherJson["wind"]["deg"].Value);
-        clouds = int.Parse(weatherJson["clouds"]["all"].Value);
-        country = weatherJson["sys"]["country"].Value;
-        // get icon
-        StartCoroutine(getIcon(_icon));
-        Debug.Log("City: " + CapitalizeString(city) + " Description: " + weatherDescription);
-        ShowOnScreen();
+
+
+        //OWMap
+            var weather = new Weather(JSON.Parse(jsonString));
+            Textboxs[0].text = weather.description;
+            var api = new API("");
+             api.keyApi = "" ;
+        //OWMap
+        /*
+       
+            v
+            lon = float.Parse(weatherJson["coord"]["lon"].Value);
+            lat = float.Parse(weatherJson["coord"]["lat"].Value);
+            city = weatherJson["name"].Value;
+            weatherDescription = weatherJson["weather"][0]["description"].Value;
+            _icon = weatherJson["weather"][0]["icon"].Value;
+            temp = weatherJson["main"]["temp"].AsInt;
+            feels_like = float.Parse(weatherJson["main"]["feels_like"].Value) / 100;
+            wind_speed = float.Parse(weatherJson["wind"]["speed"].Value);
+            wind_deg = float.Parse(weatherJson["wind"]["deg"].Value);
+            clouds = int.Parse(weatherJson["clouds"]["all"].Value);
+            country = weatherJson["sys"]["country"].Value;
+            // get icon
+            StartCoroutine(getIcon(_icon));
+            Debug.Log("City: " + CapitalizeString(city) + " Description: " + weatherDescription);
+            ShowOnScreen();
+        */
     }
     public IEnumerator getIcon(string url)
     {
